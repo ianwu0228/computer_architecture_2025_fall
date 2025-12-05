@@ -48,6 +48,8 @@ class Reg_ID_EX extends Module {
     rs2_data_id := io.in.rs2_data
     imm_id      := io.in.imm
     rd_addr_id  := io.in.rd_addr
+    rs1_addr_id := io.in.rs1_addr
+    rs2_addr_id := io.in.rs2_addr
   }
 
   io.out.ctrl     := ctrl_id

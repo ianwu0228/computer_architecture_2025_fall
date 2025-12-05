@@ -1,24 +1,11 @@
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(cpu.CoreTest, org.scalatest.tools.Framework$$anon$1@5c1427f2, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(cpu.CoreTest, org.scalatest.tools.Framework$$anon$1@5dd613c7, false, [SuiteSelector])[0m
 [0m[[0m[0minfo[0m] [0m[0m[32mCoreTest:[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32mCore[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m- should match golden memory *** FAILED ***[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  java.lang.AssertionError: assertion failed: Data memory mismatch (3 errors)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at scala.Predef$.assert(Predef.scala:279)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at chisel3.assert$.apply(VerificationStatement.scala:49)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at cpu.CoreTestFunc.testFn(CoreTest.scala:68)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at cpu.CoreTestFunc.testFn$(CoreTest.scala:14)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at cpu.CoreTest.testFn(CoreTest.scala:77)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at cpu.CoreTest.$anonfun$new$3(CoreTest.scala:81)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at cpu.CoreTest.$anonfun$new$3$adapted(CoreTest.scala:79)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at chiseltest.internal.GenericBackend.$anonfun$run$1(GenericBackend.scala:151)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at chiseltest.internal.ThreadedBackend$TesterThread$$anon$1.$anonfun$run$1(ThreadedBackend.scala:495)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  at chiseltest.internal.GenericBackend.doTimescope(GenericBackend.scala:96)[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m  ...[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 4 seconds, 14 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should match golden memory[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 5 seconds, 862 milliseconds.[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 1[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 1, aborted 0[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 0, failed 1, canceled 0, ignored 0, pending 0[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[31m*** 1 TEST FAILED ***[0m[0m
-[0m[[0m[31merror[0m] [0m[0mFailed tests:[0m
-[0m[[0m[31merror[0m] [0m[0m	cpu.CoreTest[0m
-[0m[[0m[31merror[0m] [0m[0m(Test / [31mtest[0m) sbt.TestsFailedException: Tests unsuccessful[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mAll tests passed.[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	cpu.CoreTest[0m

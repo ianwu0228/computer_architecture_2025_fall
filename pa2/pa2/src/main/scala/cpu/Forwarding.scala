@@ -21,35 +21,17 @@ class ForwardingUnit extends Module {
         val forward_b = Output(UInt(2.W))
     })
 
-    // // Default: No forwarding
-    // io.forward_a := 0.U
-    // io.forward_b := 0.U
 
-    // // -------------------------
-    // // Forward A (Source 1)
-    // // -------------------------
-    // // Priority 1: EX Hazard (From MEM stage)
-    // when(io.reg_write_mem && io.rd_mem =/= 0.U && io.rd_mem === io.rs1_ex) {
-    //     io.forward_a := 2.U 
-    // }
-    // // Priority 2: MEM Hazard (From WB stage)
-    // .elsewhen(io.reg_write_wb && io.rd_wb =/= 0.U && io.rd_wb === io.rs1_ex) {
-    //     io.forward_a := 1.U
-    // }
 
-    // // -------------------------
-    // // Forward B (Source 2)
-    // // -------------------------
-    // // Priority 1: EX Hazard (From MEM stage)
-    // when(io.reg_write_mem && io.rd_mem =/= 0.U && io.rd_mem === io.rs2_ex) {
-    //     io.forward_b := 2.U
+    // when(io.reg_write_wb || io.reg_write_mem) {
+    //     // Removed "$time" to fix compile error
+    //     printf(p"FwdUnit Debug:\n") 
+    //     printf(p"  RS1_EX: ${io.rs1_ex}  RS2_EX: ${io.rs2_ex}\n")
+    //     printf(p"  MEM: Rd=${io.rd_mem} Wr=${io.reg_write_mem}\n")
+    //     printf(p"  WB : Rd=${io.rd_wb}  Wr=${io.reg_write_wb}\n")
+    //     printf(p"  ForwardA: ${io.forward_a} ForwardB: ${io.forward_b}\n")
+    //     printf("--------------------------------\n")
     // }
-    // // Priority 2: MEM Hazard (From WB stage)
-    // .elsewhen(io.reg_write_wb && io.rd_wb =/= 0.U && io.rd_wb === io.rs2_ex) {
-    //     io.forward_b := 1.U
-    // }
-
-   
     // 1. Initialize Default Values (Crucial to prevent latches/unknown states)
     io.forward_a := 0.U
     io.forward_b := 0.U
