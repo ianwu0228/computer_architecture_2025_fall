@@ -9,9 +9,6 @@ class ID_EX_Bundle extends Bundle {
     val rs2_data  = UInt(32.W)
     val imm       = UInt(32.W)
     val rd_addr   = UInt(5.W)
-    // for forwarding
-    val rs1_addr  = UInt(5.W)
-    val rs2_addr  = UInt(5.W)
 }
 
 
