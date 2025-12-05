@@ -9,6 +9,9 @@ class ID_EX_Bundle extends Bundle {
     val rs2_data  = UInt(32.W)
     val imm       = UInt(32.W)
     val rd_addr   = UInt(5.W)
+    // forwarding
+    val rs1_addr  = UInt(5.W)
+    val rs2_addr  = UInt(5.W)
 }
 
 
@@ -28,6 +31,8 @@ class Reg_ID_EX extends Module {
   val rs2_data_id = RegInit(0.U(32.W))
   val imm_id      = RegInit(0.U(32.W))
   val rd_addr_id  = RegInit(0.U(5.W))
+  val rs1_addr_id = RegInit(0.U(5.W))
+  val rs2_addr_id = RegInit(0.U(5.W))
 
   when (io.flush) {
     ctrl_id     := 0.U.asTypeOf(new CtrlSignal)
@@ -51,4 +56,7 @@ class Reg_ID_EX extends Module {
   io.out.rs2_data := rs2_data_id
   io.out.imm      := imm_id
   io.out.rd_addr  := rd_addr_id
+
+  io.out.rs1_addr := rs1_addr_id
+  io.out.rs2_addr := rs2_addr_id
 }
