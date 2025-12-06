@@ -7,3 +7,4 @@
 [0m[[0m[0mdebug[0m] [0m[0m> Exec(reload, None, None)[0m
 [0m[[0m[0mdebug[0m] [0m[0m> Exec(sbtStashOnFailure, None, None)[0m
 [0m[[0m[0mdebug[0m] [0m[0m> Exec(onFailure loadFailed, None, None)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(loadp, None, None)[0m

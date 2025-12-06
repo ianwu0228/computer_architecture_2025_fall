@@ -21,17 +21,6 @@ class ForwardingUnit extends Module {
         val forward_b = Output(UInt(2.W))
     })
 
-
-
-    // when(io.reg_write_wb || io.reg_write_mem) {
-    //     // Removed "$time" to fix compile error
-    //     printf(p"FwdUnit Debug:\n") 
-    //     printf(p"  RS1_EX: ${io.rs1_ex}  RS2_EX: ${io.rs2_ex}\n")
-    //     printf(p"  MEM: Rd=${io.rd_mem} Wr=${io.reg_write_mem}\n")
-    //     printf(p"  WB : Rd=${io.rd_wb}  Wr=${io.reg_write_wb}\n")
-    //     printf(p"  ForwardA: ${io.forward_a} ForwardB: ${io.forward_b}\n")
-    //     printf("--------------------------------\n")
-    // }
     // 1. Initialize Default Values (Crucial to prevent latches/unknown states)
     io.forward_a := 0.U
     io.forward_b := 0.U

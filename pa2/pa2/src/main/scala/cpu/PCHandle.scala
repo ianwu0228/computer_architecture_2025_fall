@@ -7,6 +7,7 @@ class PCHandle_io extends Bundle {
   val to_branch = Input(Bool())
   val jump_addr = Input(UInt(32.W))
   val pc        = Output(UInt(32.W))
+  val stall     = Input(Bool())
 }
 
 class PCHandle extends Module {
@@ -17,6 +18,14 @@ class PCHandle extends Module {
   // basic next PC logic: PC+4 or branch/jump target
   val next_pc = Mux(io.to_branch, io.jump_addr, pc + 4.U)
 
-  pc := next_pc
-  io.pc := pc
+  // Only update PC if NOT stalled
+  when(!io.stall) {
+      pc := next_pc
+  }
+
+  // io.pc := pc
+  
+  // to make sure when stalled, the output pc remains the same as previous cycle
+  io.pc := Mux(io.stall, pc - 4.U, pc)
+
 }

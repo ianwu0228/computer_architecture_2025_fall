@@ -41,6 +41,8 @@ class Reg_ID_EX extends Module {
     rs2_data_id := 0.U
     imm_id      := 0.U
     rd_addr_id  := 0.U
+    rs1_addr_id := 0.U
+    rs2_addr_id := 0.U
   } .elsewhen (!io.stall) {
     ctrl_id     := io.in.ctrl
     pc_id       := io.in.pc

@@ -37,10 +37,30 @@ class Core extends Module {
     val ex_mem = Module(new Reg_EX_MEM())
     val mem_wb = Module(new Reg_MEM_WB())
 
+
+    // ------------------------------------------------------------
+    // HAZARD DETECTION UNIT
+    // ------------------------------------------------------------
+    
+    // Check if the instruction currently in EX stage is a LOAD
+    val is_ex_load = id_ex.io.out.ctrl.ctrlMemRead
+
+    // Check if the instruction in ID stage (Decoder output) reads from the load destination
+    val rs1_conflict = (decoder.io.regs.rs1_addr === id_ex.io.out.rd_addr) && (id_ex.io.out.rd_addr =/= 0.U)
+    val rs2_conflict = (decoder.io.regs.rs2_addr === id_ex.io.out.rd_addr) && (id_ex.io.out.rd_addr =/= 0.U)
+
+    // Detect Load-Use Hazard
+    val load_use_hazard = is_ex_load && (rs1_conflict || rs2_conflict)
+
+
     // ------------------------------------------------------------
     // IF stage
     // ------------------------------------------------------------
-
+    
+    // stall the pc_handle when load-use hazard detected
+    pc_handle.io.stall := load_use_hazard  // Freeze PC
+    
+    
     // assign the pc variables
     pc_handle.io.to_branch := false.B
     pc_handle.io.jump_addr := 0.U
@@ -53,9 +73,10 @@ class Core extends Module {
     // prepare the input for IF/ID pipeline register
     if_id.io.in.pc := pc_handle.io.pc
     if_id.io.in.inst := inst_mem.io.inst
-    // stall and flush 
-    if_id.io.stall := false.B
-    if_id.io.flush := false.B
+    
+    // Stall IF/ID if hazard is detected (hold the instruction in ID)
+    if_id.io.stall := load_use_hazard 
+    if_id.io.flush := false.B // (Add branch flush logic here later if needed)
 
 
     // ------------------------------------------------------------
@@ -81,7 +102,7 @@ class Core extends Module {
    
     // stall and flush
     id_ex.io.stall := false.B
-    id_ex.io.flush := false.B
+    id_ex.io.flush := load_use_hazard
 
     // prepare the input for ID/EX pipeline register
     id_ex.io.in.ctrl := decoder.io.ctrl
@@ -91,11 +112,14 @@ class Core extends Module {
     id_ex.io.in.imm := decoder.io.imm
     id_ex.io.in.rd_addr := decoder.io.regs.rd_addr
 
+
+    
+
     // ------------------------------------------------------------
     // EX stage
     // ------------------------------------------------------------
 
-
+    // forwarding unit
     val forwarding_unit = Module(new ForwardingUnit())
 
     // Inputs from ID/EX (Current Stage)
@@ -158,7 +182,7 @@ class Core extends Module {
 
     // prepare the input for EX/MEM pipeline register
     ex_mem.io.in.alu_result := alu.io.alu_result
-    ex_mem.io.in.rs2_data := id_ex.io.out.rs2_data
+    ex_mem.io.in.rs2_data := forwarded_src2
     ex_mem.io.in.rd_addr := id_ex.io.out.rd_addr
     ex_mem.io.in.ctrl := id_ex.io.out.ctrl
 
