@@ -16,7 +16,7 @@ class PCHandle extends Module {
   val pc = RegInit(0.U(32.W))
 
   // basic next PC logic: PC+4 or branch/jump target
-  val next_pc = Mux(io.to_branch, io.jump_addr, pc + 4.U)
+  val next_pc = Mux(io.to_branch, io.jump_addr + 4.U, pc + 4.U)
 
   // Only update PC if NOT stalled
   when(!io.stall) {
@@ -26,6 +26,8 @@ class PCHandle extends Module {
   // io.pc := pc
   
   // to make sure when stalled, the output pc remains the same as previous cycle
-  io.pc := Mux(io.stall, pc - 4.U, pc)
+  // io.pc := Mux(io.stall, pc - 4.U, pc)
+  io.pc := Mux(io.stall, pc - 4.U,
+             Mux(io.to_branch, io.jump_addr, pc))
 
 }

@@ -9,15 +9,18 @@ circuit Core :
 
     reg pc : UInt<32>, clock with :
       reset => (UInt<1>("h0"), pc) @[PCHandle.scala 16:19]
-    node _next_pc_T = add(pc, UInt<3>("h4")) @[PCHandle.scala 19:52]
-    node _next_pc_T_1 = tail(_next_pc_T, 1) @[PCHandle.scala 19:52]
-    node next_pc = mux(io_to_branch, io_jump_addr, _next_pc_T_1) @[PCHandle.scala 19:20]
+    node _next_pc_T = add(io_jump_addr, UInt<3>("h4")) @[PCHandle.scala 19:48]
+    node _next_pc_T_1 = tail(_next_pc_T, 1) @[PCHandle.scala 19:48]
+    node _next_pc_T_2 = add(pc, UInt<3>("h4")) @[PCHandle.scala 19:58]
+    node _next_pc_T_3 = tail(_next_pc_T_2, 1) @[PCHandle.scala 19:58]
+    node next_pc = mux(io_to_branch, _next_pc_T_1, _next_pc_T_3) @[PCHandle.scala 19:20]
     node _T = eq(io_stall, UInt<1>("h0")) @[PCHandle.scala 22:8]
     node _GEN_0 = mux(_T, next_pc, pc) @[PCHandle.scala 22:19 23:10 16:19]
-    node _io_pc_T = sub(pc, UInt<3>("h4")) @[PCHandle.scala 29:29]
-    node _io_pc_T_1 = tail(_io_pc_T, 1) @[PCHandle.scala 29:29]
-    node _io_pc_T_2 = mux(io_stall, _io_pc_T_1, pc) @[PCHandle.scala 29:15]
-    io_pc <= _io_pc_T_2 @[PCHandle.scala 29:9]
+    node _io_pc_T = sub(pc, UInt<3>("h4")) @[PCHandle.scala 30:29]
+    node _io_pc_T_1 = tail(_io_pc_T, 1) @[PCHandle.scala 30:29]
+    node _io_pc_T_2 = mux(io_to_branch, io_jump_addr, pc) @[PCHandle.scala 31:17]
+    node _io_pc_T_3 = mux(io_stall, _io_pc_T_1, _io_pc_T_2) @[PCHandle.scala 30:15]
+    io_pc <= _io_pc_T_3 @[PCHandle.scala 30:9]
     pc <= mux(reset, UInt<32>("h0"), _GEN_0) @[PCHandle.scala 16:{19,19}]
 
   module InstMem :
@@ -1140,11 +1143,6 @@ circuit Core :
     node load_use_hazard = and(id_ex.io_out_ctrl_ctrlMemRead, _load_use_hazard_T) @[Core.scala 53:38]
     reg if_id_io_in_pc_REG : UInt<32>, clock with :
       reset => (UInt<1>("h0"), if_id_io_in_pc_REG) @[Core.scala 77:30]
-    reg flush_branch_latency : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), flush_branch_latency) @[Core.scala 84:39]
-    reg if_id_io_in_pc_REG_1 : UInt<32>, clock with :
-      reset => (UInt<1>("h0"), if_id_io_in_pc_REG_1) @[Core.scala 86:30]
-    node _if_id_io_flush_T = or(alu.io_to_branch, flush_branch_latency) @[Core.scala 92:40]
     node _reg_file_io_rd_data_T = mux(mem_wb.io_out_ctrl_ctrlMemToReg, data_mem.io_data_out, mem_wb.io_out_alu_result) @[Core.scala 104:31]
     node _id_ex_io_flush_T = or(load_use_hazard, alu.io_to_branch) @[Core.scala 119:39]
     node _forwarded_src1_T = eq(UInt<1>("h0"), forwarding_unit.io_forward_a) @[Mux.scala 81:61]
@@ -1201,10 +1199,10 @@ circuit Core :
     data_mem.io_data_in <= ex_mem.io_out_rs2_data @[Core.scala 211:25]
     if_id.clock <= clock
     if_id.reset <= reset
-    if_id.io_in_pc <= if_id_io_in_pc_REG_1 @[Core.scala 86:20]
-    if_id.io_in_inst <= inst_mem.io_inst @[Core.scala 87:22]
-    if_id.io_stall <= load_use_hazard @[Core.scala 89:20]
-    if_id.io_flush <= _if_id_io_flush_T @[Core.scala 92:20]
+    if_id.io_in_pc <= if_id_io_in_pc_REG @[Core.scala 77:20]
+    if_id.io_in_inst <= inst_mem.io_inst @[Core.scala 78:22]
+    if_id.io_stall <= load_use_hazard @[Core.scala 81:20]
+    if_id.io_flush <= alu.io_to_branch @[Core.scala 82:20]
     id_ex.clock <= clock
     id_ex.reset <= reset
     id_ex.io_stall <= UInt<1>("h0") @[Core.scala 118:20]
@@ -1254,8 +1252,6 @@ circuit Core :
     mem_wb.io_in_ctrl_ctrlALUOp <= ex_mem.io_out_ctrl_ctrlALUOp @[Core.scala 220:23]
     mem_wb.io_in_ctrl_ctrlMemToReg <= ex_mem.io_out_ctrl_ctrlMemToReg @[Core.scala 220:23]
     if_id_io_in_pc_REG <= pc_handle.io_pc @[Core.scala 77:30]
-    flush_branch_latency <= alu.io_to_branch @[Core.scala 84:39]
-    if_id_io_in_pc_REG_1 <= pc_handle.io_pc @[Core.scala 86:30]
     forwarding_unit.clock <= clock
     forwarding_unit.reset <= reset
     forwarding_unit.io_rs1_ex <= id_ex.io_out_rs1_addr @[Core.scala 140:31]

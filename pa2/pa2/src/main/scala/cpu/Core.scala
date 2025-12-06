@@ -79,18 +79,18 @@ class Core extends Module {
     
     // Stall IF/ID if hazard is detected (hold the instruction in ID)
     if_id.io.stall := load_use_hazard 
-    // if_id.io.flush := alu.io.to_branch
+    if_id.io.flush := alu.io.to_branch
 
-    val flush_branch_latency = RegNext(alu.io.to_branch)
+    // val flush_branch_latency = RegNext(alu.io.to_branch)
 
-    if_id.io.in.pc := RegNext(pc_handle.io.pc) // Keep your PC Delay fix!
-    if_id.io.in.inst := inst_mem.io.inst
+    // if_id.io.in.pc := RegNext(pc_handle.io.pc) // Keep your PC Delay fix!
+    // if_id.io.in.inst := inst_mem.io.inst
     
-    if_id.io.stall := load_use_hazard 
+    // if_id.io.stall := load_use_hazard 
     
-    // --- MODIFY THIS LINE ---
-    if_id.io.flush := alu.io.to_branch || flush_branch_latency
-    // ------------------------
+    // // --- MODIFY THIS LINE ---
+    // if_id.io.flush := alu.io.to_branch || flush_branch_latency
+    // // ------------------------
 
 
     // ------------------------------------------------------------
