@@ -744,7 +744,11 @@ class PCHandle extends Module {
       pc := next_pc
   }
 
-  io.pc := pc
+  // io.pc := pc
+  
+  // to make sure when stalled, the output pc remains the same as previous cycle
+  io.pc := Mux(io.stall, pc - 4.U, pc)
+
 }
 
 
@@ -773,7 +777,6 @@ class Reg_EX_MEM extends Module {
     val out   = Output(new EX_MEM_Bundle)
   })
 
-  // real registers
   val alu_result_ex     = RegInit(0.U(32.W))
   val rs2_data_ex       = RegInit(0.U(32.W))
   val rd_addr_ex        = RegInit(0.U(5.W))
@@ -785,27 +788,13 @@ class Reg_EX_MEM extends Module {
     rd_addr_ex        := 0.U
     ctrl_ex           := 0.U.asTypeOf(new CtrlSignal)
   } .elsewhen (!io.stall) {
-    val is_bubble = !io.in.ctrl.ctrlRegWrite && !io.in.ctrl.ctrlMemWrite && 
-                    !io.in.ctrl.ctrlMemRead && !io.in.ctrl.ctrlBranch && !io.in.ctrl.ctrlJump
-    
-    when(!is_bubble) {
-        alu_result_ex := io.in.alu_result
-    }
-    
-    when(is_bubble) {
-        // PRESERVE state for DataMem stability during Load-Use Stall
-        alu_result_ex := alu_result_ex  // Keep Address
-        ctrl_ex       := ctrl_ex        // Keep Control (Read Enable)
-        rs2_data_ex   := rs2_data_ex    // Keep Store Data (optional but safe)
-    } .otherwise {
-        // Normal Update
-        alu_result_ex := io.in.alu_result
-        ctrl_ex       := io.in.ctrl
-        rs2_data_ex   := io.in.rs2_data
-    }
-    
-    // Always update rd_addr (Bubble has rd=0, so this ensures safety)
-    rd_addr_ex := io.in.rd_addr
+    // --- STANDARD LOGIC ONLY ---
+    // Just capture the next instruction. 
+    // If it's a bubble, we WANT zeros to flow through.
+    alu_result_ex     := io.in.alu_result
+    rs2_data_ex       := io.in.rs2_data
+    rd_addr_ex        := io.in.rd_addr
+    ctrl_ex           := io.in.ctrl
   }
 
   io.out.alu_result := alu_result_ex

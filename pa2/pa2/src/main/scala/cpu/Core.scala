@@ -62,8 +62,10 @@ class Core extends Module {
     
     
     // assign the pc variables
-    pc_handle.io.to_branch := false.B
-    pc_handle.io.jump_addr := 0.U
+    pc_handle.io.to_branch := alu.io.to_branch 
+    pc_handle.io.jump_addr := alu.io.jump_addr
+
+
     // assign the instruction memory address
     inst_mem.io.addr := pc_handle.io.pc
 
@@ -71,12 +73,24 @@ class Core extends Module {
     val inst_wire = inst_mem.io.inst
 
     // prepare the input for IF/ID pipeline register
-    if_id.io.in.pc := pc_handle.io.pc
+    // if_id.io.in.pc := pc_handle.io.pc
+    if_id.io.in.pc := RegNext(pc_handle.io.pc)
     if_id.io.in.inst := inst_mem.io.inst
     
     // Stall IF/ID if hazard is detected (hold the instruction in ID)
     if_id.io.stall := load_use_hazard 
-    if_id.io.flush := false.B // (Add branch flush logic here later if needed)
+    // if_id.io.flush := alu.io.to_branch
+
+    val flush_branch_latency = RegNext(alu.io.to_branch)
+
+    if_id.io.in.pc := RegNext(pc_handle.io.pc) // Keep your PC Delay fix!
+    if_id.io.in.inst := inst_mem.io.inst
+    
+    if_id.io.stall := load_use_hazard 
+    
+    // --- MODIFY THIS LINE ---
+    if_id.io.flush := alu.io.to_branch || flush_branch_latency
+    // ------------------------
 
 
     // ------------------------------------------------------------
@@ -102,8 +116,8 @@ class Core extends Module {
    
     // stall and flush
     id_ex.io.stall := false.B
-    id_ex.io.flush := load_use_hazard
-
+    id_ex.io.flush := load_use_hazard || alu.io.to_branch
+    
     // prepare the input for ID/EX pipeline register
     id_ex.io.in.ctrl := decoder.io.ctrl
     id_ex.io.in.pc := if_id.io.out.pc
