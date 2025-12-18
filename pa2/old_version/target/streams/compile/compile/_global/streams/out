@@ -1,0 +1,7 @@
+[0m[[0m[31merror[0m] [0m[0m/home/ianwu/NTU/computer_architecture/pa2/CA2025_PA2/src/main/scala/cpu/Core.scala:186:11: reassignment to val[0m
+[0m[[0m[31merror[0m] [0m[0m  ex_src1 = WireDefault(ex_src1_raw)[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/ianwu/NTU/computer_architecture/pa2/CA2025_PA2/src/main/scala/cpu/Core.scala:187:11: reassignment to val[0m
+[0m[[0m[31merror[0m] [0m[0m  ex_src2 = WireDefault(ex_alu_src2)[0m
+[0m[[0m[31merror[0m] [0m[0m          ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

@@ -21,19 +21,7 @@ venv/
 *.a
 *.lib
 
-# Scala / Chisel (sbt)
-target/
-test_run_dir/
-project/target/
-project/project/
-.bsp/
-.bloop/
-.metals/
 
-# Gem5 / Architecture Simulators
-m5out/
-build/
-ext/
 
 # OS / Editors
 .DS_Store
