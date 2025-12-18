@@ -1,6 +1,0 @@
-[0m[[0m[0mdebug[0m] [0m[0m[zinc] IncrementalCompile -----------[0m
-[0m[[0m[0mdebug[0m] [0m[0mIncrementalCompile.incrementalCompile[0m
-[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 32 products, 13 sources, 4 libraries[0m
-[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/src/main/scala/cpu/DataMem.scala, ${BASE}/src/main/scala/cpu/Core.scala, ${BASE}/src/main/scala/cpu/Forwarding.scala, ${BASE}/src/main/scala/cpu/Alu.scala, ${BASE}/src/main/scala/cpu/Reg_IF_ID.scala, ${BASE}/src/main/scala/cpu/Reg_ID_EX.scala, ${BASE}/src/main/scala/cpu/Reg_EX_MEM.scala, ${BASE}/src/main/scala/cpu/Regfile.scala, ${BASE}/src/main/scala/cpu/Reg_MEM_WB.scala, ${BASE}/src/main/scala/cpu/Decoder.scala, ${BASE}/src/main/scala/cpu/PCHandle.scala, ${BASE}/src/main/scala/cpu/Bundles.scala, ${BASE}/src/main/scala/cpu/InstMem.scala)[0m
-[0m[[0m[0mdebug[0m] [0m[0m> initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(), unmodified = ...),Set(),Set(),API Changes: Set())[0m
-[0m[[0m[0mdebug[0m] [0m[0mNo changes[0m

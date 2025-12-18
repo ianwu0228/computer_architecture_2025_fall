@@ -1,0 +1,42 @@
+Jupiter-3.1-linux/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv
+
+# C++
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.exe
+*.a
+*.lib
+
+# Scala / Chisel (sbt)
+target/
+test_run_dir/
+project/target/
+project/project/
+.bsp/
+.bloop/
+.metals/
+
+# Gem5 / Architecture Simulators
+m5out/
+build/
+ext/
+
+# OS / Editors
+.DS_Store
+.vscode/
+.idea/
+*.swp
