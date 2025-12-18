@@ -239,17 +239,6 @@ class Core extends Module {
     if_id.io.stall := load_use_hazard 
     if_id.io.flush := alu.io.to_branch
 
-    // val flush_branch_latency = RegNext(alu.io.to_branch)
-
-    // if_id.io.in.pc := RegNext(pc_handle.io.pc) // Keep your PC Delay fix!
-    // if_id.io.in.inst := inst_mem.io.inst
-    
-    // if_id.io.stall := load_use_hazard 
-    
-    // // --- MODIFY THIS LINE ---
-    // if_id.io.flush := alu.io.to_branch || flush_branch_latency
-    // // ------------------------
-
 
     // ------------------------------------------------------------
     // ID stage
@@ -751,7 +740,7 @@ class PCHandle extends Module {
   val pc = RegInit(0.U(32.W))
 
   // basic next PC logic: PC+4 or branch/jump target
-  val next_pc = Mux(io.to_branch, io.jump_addr, pc + 4.U)
+  val next_pc = Mux(io.to_branch, io.jump_addr + 4.U, pc + 4.U)
 
   // Only update PC if NOT stalled
   when(!io.stall) {
